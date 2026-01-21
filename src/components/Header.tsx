@@ -1,7 +1,3 @@
-'use client';
-
-import React from "react"
-
 import { useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
@@ -28,7 +24,6 @@ export function Header({ onSearchChange }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-gradient-to-r from-violet-500/10 via-primary/5 to-blue-500/10 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center shadow-lg">
             <PenSquare className="w-4 h-4 text-white" />
@@ -36,9 +31,7 @@ export function Header({ onSearchChange }: HeaderProps) {
           <span className="text-lg font-bold text-gradient-primary">Blog App</span>
         </div>
 
-        {/* Search Bar and Create Blog Button */}
         <div className="flex items-center gap-3">
-          {/* Search Bar */}
           <div className="relative hidden sm:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
@@ -60,7 +53,6 @@ export function Header({ onSearchChange }: HeaderProps) {
             )}
           </div>
 
-          {/* Create Blog Button */}
           <Button className="rounded-lg bg-gradient-primary hover:bg-gradient-primary/90 shadow-lg hover:shadow-xl transition-all">
             <PenSquare className="w-4 h-4 mr-2" />
             Create Blog
@@ -70,3 +62,4 @@ export function Header({ onSearchChange }: HeaderProps) {
     </header>
   )
 }
+

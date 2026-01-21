@@ -1,10 +1,8 @@
-'use client'
-
 import * as React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { XIcon } from 'lucide-react'
 
-import { cn } from '@/lib/utils'
+import { cn } from '../../lib/utils'
 
 function Dialog({
   ...props
@@ -30,19 +28,18 @@ function DialogClose({
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
 }
 
-function DialogOverlay({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+function DialogOverlay(
+  props: React.ComponentProps<typeof DialogPrimitive.Overlay>
+) {
   return (
-  <DialogPrimitive.Overlay
-  className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm
-             data-[state=open]:animate-in
-             data-[state=closed]:animate-out
-             data-[state=closed]:fade-out-0
-             data-[state=open]:fade-in-0"
-/>
-
+    <DialogPrimitive.Overlay
+      className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm
+                 data-[state=open]:animate-in
+                 data-[state=closed]:animate-out
+                 data-[state=closed]:fade-out-0
+                 data-[state=open]:fade-in-0"
+      {...props}
+    />
   )
 }
 
@@ -141,3 +138,4 @@ export {
   DialogTitle,
   DialogTrigger,
 }
+

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { blogAPI } from '@/lib/api'
+import { blogAPI } from '../lib/api'
 import { Badge } from './ui/badge'
 import { AlertCircle, Calendar, Clock, User, Quote } from 'lucide-react'
 import { format } from 'date-fns'
@@ -78,7 +78,6 @@ export function BlogDetail({ blogId }: BlogDetailProps) {
 
   return (
     <article className="space-y-4 bg-gradient-card rounded-xl p-4 sm:p-6 shadow-sm">
-      {/* Cover Image */}
       <div className="relative w-full h-48 sm:h-64 rounded-xl overflow-hidden bg-muted shadow-sm">
         {blog.coverImage ? (
           <img
@@ -93,9 +92,7 @@ export function BlogDetail({ blogId }: BlogDetailProps) {
         )}
       </div>
 
-      {/* Header Section */}
       <div className="space-y-4">
-        {/* Category Badges */}
         <div className="flex flex-wrap gap-2">
           {blog.category.map((cat: string, index: number) => (
             <Badge
@@ -116,12 +113,10 @@ export function BlogDetail({ blogId }: BlogDetailProps) {
           ))}
         </div>
 
-        {/* Title */}
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight text-foreground">
           {blog.title}
         </h1>
 
-        {/* Meta Info */}
         <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4" />
@@ -134,14 +129,12 @@ export function BlogDetail({ blogId }: BlogDetailProps) {
         </div>
       </div>
 
-      {/* Content */}
       <div className="prose prose-stone max-w-none dark:prose-invert">
         <p className="text-base sm:text-lg leading-relaxed text-foreground/90 whitespace-pre-wrap">
           {blog.content}
         </p>
       </div>
 
-      {/* Quote-style Highlight Box */}
       {blog.description && (
         <div className="my-6 p-4 bg-gradient-to-r from-violet-500/10 to-blue-500/10 rounded-lg border-l-4 border-gradient-primary shadow-md">
           <Quote className="w-5 h-5 text-primary/60 mb-2" />
@@ -151,7 +144,6 @@ export function BlogDetail({ blogId }: BlogDetailProps) {
         </div>
       )}
 
-      {/* Author Section */}
       <div className="mt-6 pt-4 border-t">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center shadow-lg">
@@ -166,3 +158,4 @@ export function BlogDetail({ blogId }: BlogDetailProps) {
     </article>
   )
 }
+

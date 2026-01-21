@@ -1,4 +1,4 @@
-import { Blog, CreateBlogInput } from './types'
+import type { Blog, CreateBlogInput } from './types'
 
 const API_URL = 'http://localhost:3001'
 
@@ -38,3 +38,4 @@ export const blogAPI = {
     return response.json()
   },
 }
+

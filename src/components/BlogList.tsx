@@ -1,8 +1,6 @@
-'use client';
-
 import { useQuery } from '@tanstack/react-query'
-import { blogAPI } from '@/lib/api'
-import { Blog } from '@/lib/types'
+import { blogAPI } from '../lib/api'
+import type { Blog } from '../lib/types'
 import { Card, CardContent } from './ui/card'
 import { Badge } from './ui/badge'
 import { AlertCircle } from 'lucide-react'
@@ -33,7 +31,7 @@ function BlogCardSkeleton() {
 }
 
 export function BlogList({ selectedBlogId, onSelectBlogAction, searchQuery = '' }: BlogListProps) {
-  const { data: blogs, isLoading, error } = useQuery({
+  const { data: blogs = [], isLoading, error } = useQuery({
     queryKey: ['blogs'],
     queryFn: blogAPI.getAllBlogs,
   })
@@ -44,7 +42,7 @@ export function BlogList({ selectedBlogId, onSelectBlogAction, searchQuery = '' 
     return (
       blog.title.toLowerCase().includes(query) ||
       blog.description.toLowerCase().includes(query) ||
-      blog.category.some((cat) => cat.toLowerCase().includes(query))
+      blog.category.some((cat: string) => cat.toLowerCase().includes(query))
     )
   })
 
@@ -101,7 +99,7 @@ export function BlogList({ selectedBlogId, onSelectBlogAction, searchQuery = '' 
         >
           <CardContent className="p-4">
             <div className="flex flex-wrap gap-1.5 mb-2">
-              {blog.category.slice(0, 3).map((cat, index) => (
+              {blog.category.slice(0, 3).map((cat: string, index: number) => (
                 <Badge
                   key={cat}
                   variant={selectedBlogId === blog.id ? 'default' : 'secondary'}
@@ -156,3 +154,4 @@ export function BlogList({ selectedBlogId, onSelectBlogAction, searchQuery = '' 
     </div>
   )
 }
+

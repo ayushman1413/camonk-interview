@@ -1,11 +1,7 @@
-'use client';
-
-import React from "react"
-
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { blogAPI } from '@/lib/api'
-import { CreateBlogInput } from '@/lib/types'
+import { blogAPI } from '../lib/api'
+import type { Blog, CreateBlogInput } from '../lib/types'
 import {
   Dialog,
   DialogContent,
@@ -60,7 +56,7 @@ export function CreateBlog({ onBlogCreated }: CreateBlogProps) {
       return blogAPI.createBlog(payload)
     },
 
-    onSuccess: (newBlog) => {
+    onSuccess: (newBlog: Blog) => {
       queryClient.invalidateQueries({ queryKey: ['blogs'] })
 
       setFormData({
@@ -77,7 +73,7 @@ export function CreateBlog({ onBlogCreated }: CreateBlogProps) {
       onBlogCreated?.(newBlog.id)
     },
 
-    onError: (err) => {
+    onError: (err: Error) => {
       setError(err instanceof Error ? err.message : 'Failed to create blog')
     },
   })
@@ -195,3 +191,4 @@ export function CreateBlog({ onBlogCreated }: CreateBlogProps) {
     </Dialog>
   )
 }
+

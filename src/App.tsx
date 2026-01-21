@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Header } from './components/Header'
@@ -8,7 +6,7 @@ import { BlogDetail } from './components/BlogDetail'
 import { CreateBlog } from './components/CreateBlog'
 import { Button } from './components/ui/button'
 import { ArrowLeft, FileText } from 'lucide-react'
-import './index.css'
+import '../styles/globals.css'
 
 const queryClient = new QueryClient()
 
@@ -45,7 +43,6 @@ export default function App() {
           )}
 
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-4">
-            {/* Left Panel: Blog List */}
             <div
               className={`xl:col-span-4 space-y-3 ${
                 isMobileDetailView ? 'hidden xl:block' : 'block'
@@ -62,7 +59,7 @@ export default function App() {
                 <BlogList
                   selectedBlogId={selectedBlogId}
                   searchQuery={searchQuery}
-                  onSelectBlogAction={(id) => {
+                  onSelectBlogAction={(id: string) => {
                     setSelectedBlogId(id)
                     setIsMobileDetailView(true)
                   }}
@@ -70,7 +67,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* Right Panel: Blog Details */}
             <div
               className={`xl:col-span-8 ${
                 !isMobileDetailView ? 'hidden xl:block' : 'block'
@@ -86,3 +82,4 @@ export default function App() {
     </QueryClientProvider>
   )
 }
+
