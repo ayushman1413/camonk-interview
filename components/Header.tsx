@@ -1,25 +1,22 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PenSquare, Search, X } from 'lucide-react';
 
-export function Header() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [searchValue, setSearchValue] = useState(searchParams.get('q') || '');
+interface HeaderProps {
+  onSearchChange?: (query: string) => void;
+}
+
+export function Header({ onSearchChange }: HeaderProps) {
+  const [searchValue, setSearchValue] = useState('');
 
   const handleSearch = useCallback((value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (value.trim()) {
-      params.set('q', value.trim());
-    } else {
-      params.delete('q');
+    if (onSearchChange) {
+      onSearchChange(value);
     }
-    router.push(`/?${params.toString()}`);
-  }, [router, searchParams]);
+  }, [onSearchChange]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {

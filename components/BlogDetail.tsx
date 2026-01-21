@@ -5,7 +5,6 @@ import { blogAPI } from '@/lib/api';
 import { Badge } from '@/components/ui/badge';
 import { AlertCircle, Calendar, Clock, User, Quote } from 'lucide-react';
 import { format } from 'date-fns';
-import Image from 'next/image';
 
 interface BlogDetailProps {
   blogId: string | null;
@@ -86,13 +85,11 @@ export function BlogDetail({ blogId }: BlogDetailProps) {
       {/* Cover Image */}
       <div className="relative w-full h-48 sm:h-64 rounded-xl overflow-hidden bg-muted shadow-sm">
         {blog.coverImage ? (
-          <Image
+          <img
             src={blog.coverImage}
             alt={blog.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="(max-width: 768px) 100vw, 66vw"
+            className="w-full h-full object-cover"
+            loading="lazy"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/50">
