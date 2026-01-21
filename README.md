@@ -20,7 +20,8 @@ This project was developed as part of a frontend internship assignment to demons
 ## 📸 Project Preview
 
 ### 📱 Mobile View
-<img src="./screenshots/mobileui-image.png" width="300" />  <img src="./screenshots/mobileui-image2.png" width="300" />
+<img src="./screenshots/mobileui-image.png" width="300" />
+<img src="./screenshots/mobileui-image2.png" width="300" />
 
 ---
 
