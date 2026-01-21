@@ -62,8 +62,3 @@ This project was developed as part of a frontend internship assignment to demons
 - **JSON Server (Mock Backend)**
 
 ---
-
-## 📂 Project Structure
-
-
-Good luck! 🚀
