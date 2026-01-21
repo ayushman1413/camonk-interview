@@ -20,6 +20,18 @@ interface CreateBlogProps {
   onBlogCreated?: (blogId: string) => void
 }
 
+// Helper function to validate if URL is a valid image
+function isValidImageUrl(url: string): boolean {
+  if (!url || typeof url !== 'string') return false
+  
+  // Check for common image extensions
+  const imageExtensions = /\.(jpg|jpeg|png|gif|webp|svg|ico)(\?.*)?$/i
+  // Check for common image hosting services
+  const imageHosts = /^(images\.unsplash\.com|pexels\.com|unsplash\.com|imgur\.com|i\.imgur\.com|placehold\.co|via\.placeholder\.com)/i
+  
+  return imageExtensions.test(url) || imageHosts.test(url)
+}
+
 export function CreateBlog({ onBlogCreated }: CreateBlogProps) {
   const [open, setOpen] = useState(false)
   const [error, setError] = useState('')
@@ -86,6 +98,13 @@ export function CreateBlog({ onBlogCreated }: CreateBlogProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+
+    // Validate image URL
+    if (formData.coverImage && !isValidImageUrl(formData.coverImage)) {
+      setError('Please enter a valid image URL (ending with .jpg, .jpeg, .png, .gif, .webp, etc.)')
+      return
+    }
+
     createBlog()
   }
 

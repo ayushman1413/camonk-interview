@@ -126,8 +126,19 @@
       ],
       "description": "heelo",
       "content": "hello , blog",
-      "coverImage": "https://unsplash.com/s/photos/image",
+      "coverImage": "https://images.pexels.com/photos/159711/books-1001890_1280.jpg",
       "date": "2026-01-21T07:30:42.926Z"
+    },
+    {
+      "id": "d994",
+      "title": "my first blog ",
+      "category": [
+        "new blog"
+      ],
+      "description": "here a blog ",
+      "content": "Blog content refers to articles, posts, and multimedia published on a blog, typically in a conversational style, covering specific topics to inform, entertain, or engage readers, often using headings, visuals, and calls-to-action (CTAs) to provide value and drive interaction, with types ranging from tutorials and listicles to reviews and case studies, all designed to attract and retain an audience. \nTypes of Blog Content\nEducational: How-to guides, tutorials, FAQs, beginner's guides, glossaries, myth-busting.\nListicles & Resources: Listicles (e.g., \"Top 10\"), checklists, resource roundups, templates, tool showcases.\nOpinion & News: Industry news, commentary, controversial topics, behind-the-scenes, brand history, rants.\nInteractive & Engagement: Quizzes, polls, contests, interviews, Q&A sessions.\nMultimedia: Infographics, videos, photo albums, podcasts, presentations.\nReviews & Comparisons: Product reviews, comparison posts, case studies.\nPersonal: Success/failure stories, personal experiences, \"what I learned\" posts. \nThis video provides a comprehensive guide on how to start a blog:",
+      "coverImage": "https://images.pexels.com/photos/262367/pexels-photo-262367.jpeg",
+      "date": "2026-01-21T08:41:17.869Z"
     }
   ]
 }

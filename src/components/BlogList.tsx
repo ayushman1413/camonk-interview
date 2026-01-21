@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { blogAPI } from '../lib/api'
 import type { Blog } from '../lib/types'
@@ -5,7 +6,7 @@ import { Card, CardContent } from './ui/card'
 import { Badge } from './ui/badge'
 import { AlertCircle } from 'lucide-react'
 import { format } from 'date-fns'
-import { Clock, Calendar } from 'lucide-react'
+import { Clock, Calendar, Image as ImageIcon } from 'lucide-react'
 
 interface BlogListProps {
   selectedBlogId: string | null
@@ -27,6 +28,96 @@ function BlogCardSkeleton() {
         <div className="h-3 w-16 bg-muted rounded animate-pulse"></div>
       </div>
     </div>
+  )
+}
+
+interface BlogCardProps {
+  blog: Blog
+  isSelected: boolean
+  onSelect: () => void
+}
+
+function BlogCard({ blog, isSelected, onSelect }: BlogCardProps) {
+  const [imageError, setImageError] = useState(false)
+  
+  return (
+    <Card
+      className={`cursor-pointer transition-all duration-200 border-muted/60 hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/30 ${
+        isSelected
+          ? 'ring-2 ring-primary/50 shadow-md border-primary/30 bg-gradient-card'
+          : 'hover:bg-gradient-card'
+      }`}
+      onClick={onSelect}
+    >
+      <CardContent className="p-4">
+        {/* Cover Image */}
+        <div className="relative w-full h-32 rounded-lg overflow-hidden bg-muted mb-3">
+          {(blog.coverImage && !imageError) ? (
+            <img
+              src={blog.coverImage}
+              alt={blog.title}
+              className="w-full h-full object-cover"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/50">
+              <ImageIcon className="w-8 h-8 text-muted-foreground/30" />
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-1.5 mb-2">
+          {blog.category.slice(0, 3).map((cat: string, index: number) => (
+            <Badge
+              key={cat}
+              variant={isSelected ? 'default' : 'secondary'}
+              className={`text-xs font-medium px-2 py-0.5 ${
+                index === 0
+                  ? 'bg-gradient-primary text-white'
+                  : index === 1
+                    ? 'bg-gradient-secondary text-white'
+                    : 'bg-gradient-accent text-white'
+              }`}
+            >
+              {cat}
+            </Badge>
+          ))}
+          {blog.category.length > 3 && (
+            <Badge variant="outline" className="text-xs px-2 py-0.5">
+              +{blog.category.length - 3}
+            </Badge>
+          )}
+        </div>
+
+        <h3
+          className={`font-semibold text-sm leading-snug mb-2 line-clamp-2 ${
+            isSelected ? 'text-primary' : 'text-foreground'
+          }`}
+        >
+          {blog.title}
+        </h3>
+
+        <p className="text-sm text-muted-foreground line-clamp-2 mb-2 leading-relaxed">{blog.description}</p>
+
+        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1">
+            <Calendar className="w-3.5 h-3.5" />
+            <span>
+              {(() => {
+                const date = new Date(blog.date)
+                return !isNaN(date.getTime()) ? format(date, 'MMM d, yyyy') : 'Date not available'
+              })()}
+            </span>
+          </div>
+          {blog.content && (
+            <div className="flex items-center gap-1">
+              <Clock className="w-3.5 h-3.5" />
+              <span>{Math.max(1, Math.ceil(blog.content.split(/\s+/).length / 200))} min read</span>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 
@@ -88,68 +179,12 @@ export function BlogList({ selectedBlogId, onSelectBlogAction, searchQuery = '' 
   return (
     <div className="space-y-3">
       {filteredBlogs.map((blog: Blog) => (
-        <Card
+        <BlogCard
           key={blog.id}
-          className={`cursor-pointer transition-all duration-200 border-muted/60 hover:shadow-lg hover:-translate-y-0.5 hover:border-primary/30 ${
-            selectedBlogId === blog.id
-              ? 'ring-2 ring-primary/50 shadow-md border-primary/30 bg-gradient-card'
-              : 'hover:bg-gradient-card'
-          }`}
-          onClick={() => onSelectBlogAction(blog.id)}
-        >
-          <CardContent className="p-4">
-            <div className="flex flex-wrap gap-1.5 mb-2">
-              {blog.category.slice(0, 3).map((cat: string, index: number) => (
-                <Badge
-                  key={cat}
-                  variant={selectedBlogId === blog.id ? 'default' : 'secondary'}
-                  className={`text-xs font-medium px-2 py-0.5 ${
-                    index === 0
-                      ? 'bg-gradient-primary text-white'
-                      : index === 1
-                        ? 'bg-gradient-secondary text-white'
-                        : 'bg-gradient-accent text-white'
-                  }`}
-                >
-                  {cat}
-                </Badge>
-              ))}
-              {blog.category.length > 3 && (
-                <Badge variant="outline" className="text-xs px-2 py-0.5">
-                  +{blog.category.length - 3}
-                </Badge>
-              )}
-            </div>
-
-            <h3
-              className={`font-semibold text-sm leading-snug mb-2 line-clamp-2 ${
-                selectedBlogId === blog.id ? 'text-primary' : 'text-foreground'
-              }`}
-            >
-              {blog.title}
-            </h3>
-
-            <p className="text-sm text-muted-foreground line-clamp-2 mb-2 leading-relaxed">{blog.description}</p>
-
-            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5" />
-                <span>
-                  {(() => {
-                    const date = new Date(blog.date)
-                    return !isNaN(date.getTime()) ? format(date, 'MMM d, yyyy') : 'Date not available'
-                  })()}
-                </span>
-              </div>
-              {blog.content && (
-                <div className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" />
-                  <span>{Math.max(1, Math.ceil(blog.content.split(/\s+/).length / 200))} min read</span>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+          blog={blog}
+          isSelected={selectedBlogId === blog.id}
+          onSelect={() => onSelectBlogAction(blog.id)}
+        />
       ))}
     </div>
   )

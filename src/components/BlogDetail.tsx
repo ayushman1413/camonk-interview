@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { blogAPI } from '../lib/api'
 import { Badge } from './ui/badge'
@@ -29,6 +30,8 @@ function BlogDetailSkeleton() {
 }
 
 export function BlogDetail({ blogId }: BlogDetailProps) {
+  const [imageError, setImageError] = useState(false)
+  
   const { data: blog, isLoading, error } = useQuery({
     queryKey: ['blog', blogId],
     queryFn: () => blogAPI.getBlogById(blogId!),
@@ -79,11 +82,12 @@ export function BlogDetail({ blogId }: BlogDetailProps) {
   return (
     <article className="space-y-4 bg-gradient-card rounded-xl p-4 sm:p-6 shadow-sm">
       <div className="relative w-full h-48 sm:h-64 rounded-xl overflow-hidden bg-muted shadow-sm">
-        {blog.coverImage ? (
+        {(blog.coverImage && !imageError) ? (
           <img
-            src={blog.coverImage || "/placeholder.svg"}
+            src={blog.coverImage}
             alt={blog.title}
             className="w-full h-full object-cover"
+            onError={() => setImageError(true)}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/50">
