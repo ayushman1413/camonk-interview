@@ -1,35 +1,88 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+'use client';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { useState } from 'react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Header } from './components/Header'
+import { BlogList } from './components/BlogList'
+import { BlogDetail } from './components/BlogDetail'
+import { CreateBlog } from './components/CreateBlog'
+import { Button } from './components/ui/button'
+import { ArrowLeft, FileText } from 'lucide-react'
+import './index.css'
+
+const queryClient = new QueryClient()
+
+export default function App() {
+  const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null)
+  const [isMobileDetailView, setIsMobileDetailView] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const handleBlogCreated = (blogId: string) => {
+    setSelectedBlogId(blogId)
+    setIsMobileDetailView(true)
+  }
+
+  const handleBackToList = () => {
+    setIsMobileDetailView(false)
+    setSelectedBlogId(null)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <QueryClientProvider client={queryClient}>
+      <div className="min-h-screen bg-background">
+        <Header onSearchChange={setSearchQuery} />
+        <div className="container mx-auto px-4 py-4">
+          {isMobileDetailView && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleBackToList}
+              className="mb-4 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Blogs
+            </Button>
+          )}
+
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-4">
+            {/* Left Panel: Blog List */}
+            <div
+              className={`xl:col-span-4 space-y-3 ${
+                isMobileDetailView ? 'hidden xl:block' : 'block'
+              }`}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <FileText className="w-5 h-5 text-muted-foreground" />
+                <h2 className="text-lg font-semibold">All Blogs</h2>
+              </div>
+
+              <CreateBlog onBlogCreated={handleBlogCreated} />
+
+              <div className="max-h-[calc(100vh-250px)] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-rounded">
+                <BlogList
+                  selectedBlogId={selectedBlogId}
+                  searchQuery={searchQuery}
+                  onSelectBlogAction={(id) => {
+                    setSelectedBlogId(id)
+                    setIsMobileDetailView(true)
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Right Panel: Blog Details */}
+            <div
+              className={`xl:col-span-8 ${
+                !isMobileDetailView ? 'hidden xl:block' : 'block'
+              }`}
+            >
+              <div className="sticky top-20">
+                <BlogDetail blogId={selectedBlogId} />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </QueryClientProvider>
   )
 }
-
-export default App
